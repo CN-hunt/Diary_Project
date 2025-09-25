@@ -1,0 +1,122 @@
+{% extends 'basic/layout.html' %}
+{% load static %}
+
+{% block CSS %}
+
+{% endblock %}
+
+{% block content %}
+    <div class="" style="margin-top: 100px;width: 25%;margin-left: 40%">
+        <div class="card" style="padding: 10px;text-align: center">
+            <div class="card-body">
+                <h2>用户注册</h2>
+                <form id="regForm" class="form" action="#" method="post">
+                    {% csrf_token %}
+                    {% for foo in form %}
+                        {% if foo.name == "code" %}
+                            <div class="row f_row-2 last clearfix">
+                                <div class="col-8">
+                                    {{ foo }}
+                                    <span style="color: red;font-size: 13px" class="error-msg"></span>
+                                </div>
+                                <div class="col-4">
+                                    <input style="width: 93gitpx" class="btn btn-outline-dark"
+                                           type="button"
+                                           value="验证码" id="confirm_bottom">
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="f_row-2">
+                                {{ foo }}
+                                <span style="color: red;font-size: 13px" class="error-msg"></span>
+                            </div><br>
+                        {% endif %}
+                    {% endfor %}
+
+                    <br>
+                    <input id="btnSubmit" class="btn btn-outline-primary" type="button" value="注 册">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block JS %}
+    <script src="{% static 'JS/jquery-3.7.1.min.js' %}"></script>
+    <script>
+        $(function () {
+            confirm();
+            bindClickSubmit();  //提交注册数据
+        })
+
+        function bindClickSubmit() {  //点击提交注册
+            $("#btnSubmit").click(function () {
+                $('.error-msg').empty()  //每次点击清空错误信息，避免输入正确仍然残留错误信息
+                //收集表单中的数据
+                {#$("#regForm").serialize()#}
+                //ajax发送到后台
+                $.ajax({
+                    url: "/register/",
+                    type: "POST",
+                    data: $("#regForm").serialize(),
+                    dataType: "JSON",
+                    success: function (res) {
+                        // 提交成功后台返回true时做跳转
+                        console.log(res);
+                        if (res.status) {
+                            location.href = res.data
+                            // 这里就是指成功后跳转至指定的网址，
+                            // 这个网址就是我们后端返回的数据：return JsonResponse({'status': True, 'data': '/login/'})
+                        } else {
+                            $.each(res.error, function (key, value) {
+                                $("#id_" + key).next().text(value[0])
+                            })
+                        }
+                    }
+                })
+            })
+        }
+
+
+        function confirm() {
+            $("#confirm_bottom").click(function (e) {
+                e.preventDefault();
+                $('.error-msg').empty()  //避免用户在输入正确的信息后前端还保留错误提示，每次点击均清空该标签的内容
+                $.ajax({
+                    url: '/register/sendemail/',
+                    type: 'GET',
+                    data: {email: $("#id_email").val(), tpl: "register"},
+                    dataType: 'JSON',
+                    success: function (res) {
+                        console.log(res)
+                        if (res.status) {
+                            console.log('发送成功。开始倒计时')
+                            SendEmailTime()  //倒计时函数
+                        } else {
+                            //发送失败，返回错误信息
+                            console.log(res)  //错误将会以字典嵌套列表的形式返回
+                            $.each(res.error, function (key, value) {
+                                $("#id_" + key).next().text(value[0])
+                            })  //循环的意思
+                        }
+                    }
+                })
+            })
+        }
+
+        function SendEmailTime() {
+            var $confirm_bottom = $("#confirm_bottom");
+            $confirm_bottom.prop("disabled", true); // 添加disabled属性，不可操作。
+            var time = 60;
+            var remind = setInterval(function () {
+                $confirm_bottom.val(time + '秒重新发送')
+                time = time - 1;
+                if (time < 1) {
+                    clearInterval(remind);
+                    $confirm_bottom.val('发送验证码').prop("disabled", false); // 移除disabled属性，可操作。
+                }
+            }, 1000)
+
+        }
+    </script>
+{% endblock %}

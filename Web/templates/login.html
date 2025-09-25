@@ -1,0 +1,150 @@
+{% extends 'basic/layout.html' %}
+{% load static %}
+
+{% block CSS %}
+    <style>
+        /* 添加到你的 CSS 文件或 <style> 标签中 */
+        :root {
+            --primary-color: #0d6efd; /* Bootstrap 主色 */
+            --form-bg: #f8f9fa; /* 表单背景灰 */
+        }
+
+        /* 外层容器 */
+        .center {
+            max-width: 480px;
+            margin: 120px auto;
+            padding: 0 15px;
+        }
+
+        /* 卡片样式增强 */
+        .card {
+            border-radius: 1rem;
+            box-shadow: 0 .15rem 1.75rem rgba(0, 0, 0, .1);
+            border: none;
+        }
+
+        .card-body {
+            padding: 2rem !important;
+            background-color: var(--form-bg);
+        }
+
+        /* 标题样式 */
+        h3 {
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 1.5rem !important;
+        }
+
+        /* 表单组样式 */
+        .form-floating {
+            margin-bottom: 1.25rem;
+        }
+
+        /* 错误提示 */
+        .error-msg {
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: block;
+        }
+
+        /* 图片验证码区域 */
+        #imageCode {
+            height: 42px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: transform 0.2s;
+        }
+
+        #imageCode:hover {
+            transform: scale(1.05);
+        }
+
+        /* 提交按钮 */
+        .btn-outline-info {
+            width: 100%;
+            padding: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            border-width: 2px !important;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-info:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color) !important;
+            color: white;
+        }
+
+        /* 表单控件聚焦状态 */
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 576px) {
+            .center {
+                margin-top: 80px;
+                width: 90%;
+            }
+
+            .card-body {
+                padding: 1.5rem !important;
+            }
+        }
+
+        /* 图片验证码专属样式 */
+        #imageCode {
+            border-radius: 8px; /* 圆润边框 */
+            padding: 4px; /* 内部留白 */
+            background: white; /* 白色背景 */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 柔和阴影 */
+            transition: all 0.3s ease; /* 平滑过渡 */
+        }
+
+        /* 悬停状态强化 */
+        #imageCode:hover {
+            transform: scale(1.03); /* 轻微放大 */
+            box-shadow: 0 4px 8px rgba(13, 110, 253, 0.2); /* 发光效果 */
+        }
+
+        /* 点击状态反馈 */
+        #imageCode:active {
+            transform: scale(0.98); /* 轻按效果 */
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="center" style="margin-top: 100px;width: 50%;">
+        <div class="card">
+            <div class="card-body">
+                <h3 style="text-align: center">登录</h3>
+                <form action="" novalidate method="post">
+                    {% csrf_token %}
+                    {% for foo in form %}
+                        {% if foo.name == "picture_code" %}
+                            <div class="clearfix row">
+                                <div class="col-8">
+                                    {{ foo.label }}:{{ foo }}
+                                    <span style="color: red;font-size: 13px" class="error-msg">{{ foo.errors.0 }}</span>
+                                </div>
+                                <div class="col-4" style="margin-top: 20px">
+                                    <a href=""><img src="{% url 'image_code' %}" alt="error" id="imageCode"
+                                                    title="点击更换图片"></a>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="">
+                                {{ foo.label }}:{{ foo }}
+                                <span style="color: red;font-size: 13px" class="error-msg">{{ foo.errors.0 }}</span>
+                            </div><br>
+                        {% endif %}
+                    {% endfor %}
+                    <input type="submit" value="登 录" class="btn btn-outline-info" style="margin-top: 20px">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
