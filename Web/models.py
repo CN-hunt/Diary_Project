@@ -29,6 +29,7 @@ class NoteBook(models.Model):
 
 class DiaryContents(models.Model):
     """内容表"""
+    notebook = models.ForeignKey(NoteBook, on_delete=models.CASCADE)
     title = models.CharField(verbose_name='标题', max_length=50)
     content = models.TextField(verbose_name='日记内容')
     weather_choice = (

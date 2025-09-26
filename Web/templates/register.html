@@ -2,14 +2,24 @@
 {% load static %}
 
 {% block CSS %}
+    <style>
+        .btn-outline-primary {
+            width: 100%;
+            padding: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            border-width: 2px !important;
+            transition: all 0.3s ease;
+        }
+    </style>
 
 {% endblock %}
 
 {% block content %}
-    <div class="" style="margin-top: 100px;width: 25%;margin-left: 40%">
-        <div class="card" style="padding: 10px;text-align: center">
+    <div class="" style="margin-top: 100px;width:500px;margin-left: 35%">
+        <div class="card" style="padding: 10px;text-align: center;box-shadow: 4px 4px 10px #DCDCDC">
             <div class="card-body">
-                <h2>用户注册</h2>
+                <h2><b>注册</b></h2><br>
                 <form id="regForm" class="form" action="#" method="post">
                     {% csrf_token %}
                     {% for foo in form %}
@@ -20,7 +30,7 @@
                                     <span style="color: red;font-size: 13px" class="error-msg"></span>
                                 </div>
                                 <div class="col-4">
-                                    <input style="width: 93gitpx" class="btn btn-outline-dark"
+                                    <input style="width: 130px" class="btn btn-outline-dark"
                                            type="button"
                                            value="验证码" id="confirm_bottom">
                                 </div>
@@ -109,7 +119,7 @@
             $confirm_bottom.prop("disabled", true); // 添加disabled属性，不可操作。
             var time = 60;
             var remind = setInterval(function () {
-                $confirm_bottom.val(time + '秒重新发送')
+                $confirm_bottom.val(time + '秒后发送')
                 time = time - 1;
                 if (time < 1) {
                     clearInterval(remind);

@@ -29,4 +29,7 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path('image/code/', views.image_code, name='image_code'),
 
+    # 日记本操作
+    path('notebook/add',views.notebook_add, name='notebook_add'),
+
 ]

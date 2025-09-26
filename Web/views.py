@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from Web.forms.account import RegisterModelForm, SendEmailForm, LoginForm
+from Web.forms.notebook import DiaryForm
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt  # 免除认证
 from Web import models
@@ -8,7 +9,10 @@ from django.db.models import Q  # 构造复杂查询
 
 # Create your views here.
 def index(request):
-    return render(request, 'basic/layout.html')
+    user_id = request.session.get('user_id')
+    notebook_obj = models.NoteBook.objects.filter(user_id=user_id)
+    print(notebook_obj)
+    return render(request, 'index.html', {'notebooks': notebook_obj})
 
 
 @csrf_exempt
@@ -18,8 +22,14 @@ def register(request):
         return render(request, 'register.html', {'form': form})
     form = RegisterModelForm(request.POST)
     if form.is_valid():
-        form.save()
-        print(form.cleaned_data)
+        instance = form.save()
+        models.NoteBook.objects.create(  # 用户注册时会初始化的偶默认笔记本
+            user=instance,
+            Book_Name=instance.username,
+            description="开始你的第一本笔记吧"
+
+        )
+
         return JsonResponse({'status': True, 'data': '/login/'})
     return JsonResponse({'status': False, 'error': form.errors})
 
@@ -50,6 +60,7 @@ def login(request):
         if user_object:
             # 只有当用户名和密码存在正确时才允许跳转
             request.session['user_id'] = user_object.id
+            request.session['username'] = user_object.username
             request.session.set_expiry(60 * 60 * 24 * 7)  # 用户登录成功后重写session数据为两周
             return redirect('/index/')
         form.add_error('username', '用户名或密码错误')
@@ -77,3 +88,10 @@ def image_code(request):
 def logout(request):
     request.session.flush()  # 清空session数据
     return redirect('/login/')
+
+
+def notebook_add(request):
+    if request.method == "GET":
+        form = DiaryForm()
+        return render(request, 'index.html', {'form_add': form})
+
