@@ -30,6 +30,8 @@ urlpatterns = [
     path('image/code/', views.image_code, name='image_code'),
 
     # 日记本操作
-    path('notebook/add',views.notebook_add, name='notebook_add'),
+    path('notebook/add', views.notebook_add, name='notebook_add'),
+    path('notebook/<int:nid>/del/', views.notebook_del, name='notebook_del'),
+    path('notebook/content/<int:nid>/show/', views.notebook_content_show, name='notebook_content_show'),
 
 ]

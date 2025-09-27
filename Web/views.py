@@ -91,7 +91,22 @@ def logout(request):
 
 
 def notebook_add(request):
-    if request.method == "GET":
-        form = DiaryForm()
-        return render(request, 'index.html', {'form_add': form})
+    notebook_obj = request.POST.get('notebook')
+    content = request.POST.get('content')
+    if notebook_obj and content:
+        models.NoteBook.objects.create(user_id=request.session.get('user_id'), Book_Name=notebook_obj,
+                                       description=content)
+    return redirect('index')
+
+
+def notebook_del(request, nid):
+    """笔记删除"""
+    models.NoteBook.objects.filter(id=nid, user_id=request.session.get('user_id')).delete()
+    return redirect('index')
+
+
+def notebook_content_show(request, nid):
+    content_obj = models.DiaryContents.objects.filter(id=nid)
+    print(content_obj)
+    return redirect('index',)
 
