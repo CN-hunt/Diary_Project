@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from Web.forms.account import RegisterModelForm, SendEmailForm, LoginForm
-from Web.forms.notebook import DiaryForm
+from Web.forms.notebook import DiaryContentForm
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt  # 免除认证
 from Web import models
@@ -91,6 +91,7 @@ def logout(request):
 
 
 def notebook_add(request):
+    """添加笔记本"""
     notebook_obj = request.POST.get('notebook')
     content = request.POST.get('content')
     if notebook_obj and content:
@@ -100,13 +101,61 @@ def notebook_add(request):
 
 
 def notebook_del(request, nid):
-    """笔记删除"""
+    """笔记本删除"""
     models.NoteBook.objects.filter(id=nid, user_id=request.session.get('user_id')).delete()
     return redirect('index')
 
 
 def notebook_content_show(request, nid):
-    content_obj = models.DiaryContents.objects.filter(id=nid)
-    print(content_obj)
-    return redirect('index',)
+    """展示日记内容"""
+    content_id = request.GET.get('content_id')
 
+    content_obj = models.DiaryContents.objects.filter(id=content_id, notebook_id=nid).first()
+
+    return render(request, 'content_show.html', {'nid': nid, 'content_obj': content_obj})
+
+
+def notebook_content_add(request, nid):
+    """日记内容添加"""
+    if request.method == "GET":
+        form = DiaryContentForm()
+        return render(request, 'content_add.html', {'form': form})
+    form = DiaryContentForm(request.POST)
+    print(request.POST)
+    if form.is_valid():
+        diary_content = models.DiaryContents.objects.create(
+            notebook_id=nid,
+            title=form.cleaned_data['title'],
+            content=form.cleaned_data['content'],
+            weather=form.cleaned_data['weather']
+        )
+        print("success")
+        return redirect('notebook_content_show', nid=nid)
+    print(form.errors)
+    return render(request, 'content_add.html', {'form': form})
+
+
+def notebook_content_catalog(request, nid):
+    """日记目录展示AJAX"""
+    data = models.DiaryContents.objects.filter(notebook_id=nid).values('id', 'title', )
+    return JsonResponse({'status': True, 'data': list(data)})
+
+
+def notebook_content_del(request, nid, bid):
+    print(nid)
+    models.DiaryContents.objects.filter(id=nid, ).delete()
+    return redirect('notebook_content_add', nid=bid)
+
+
+def notebook_content_edit(request, nid, bid):
+    """编辑文章"""
+    if request.method == "GET":
+        instance = models.DiaryContents.objects.filter(id=nid, ).first()
+        form = DiaryContentForm(instance=instance)
+        return render(request, 'content_edit.html', {'form': form, 'nid': nid})
+    form = DiaryContentForm(request.POST, )
+    if form.is_valid():
+        print(form.cleaned_data)
+        models.DiaryContents.objects.filter(id=nid, ).update(title=form.cleaned_data['title'],
+                                                             content=form.cleaned_data['content'])
+        return redirect('notebook_content_show', nid=bid)

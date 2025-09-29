@@ -33,5 +33,9 @@ urlpatterns = [
     path('notebook/add', views.notebook_add, name='notebook_add'),
     path('notebook/<int:nid>/del/', views.notebook_del, name='notebook_del'),
     path('notebook/content/<int:nid>/show/', views.notebook_content_show, name='notebook_content_show'),
+    path('notebook/content/<int:nid>/add/', views.notebook_content_add, name='notebook_content_add'),
+    path('notebook/content/<int:nid>/catalog/', views.notebook_content_catalog, name='notebook_content_catalog'),
+    path('notebook/<int:bid>/content/<int:nid>/del/', views.notebook_content_del, name='notebook_content_del'),
+    path('notebook/<int:bid>/content/<int:nid>/edit/', views.notebook_content_edit, name='notebook_content_edit'),
 
 ]

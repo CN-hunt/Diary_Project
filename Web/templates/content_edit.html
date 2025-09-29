@@ -1,0 +1,68 @@
+{% extends 'basic/layout.html' %}
+{% load static %}
+
+{% block CSS %}
+    <link rel="stylesheet" href="{% static 'plugins/editor.md-master/css/editormd.min.css' %}">
+    <style>
+        .card-body {
+            padding: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container" style="margin-top: 80px">
+        <div class="card" style="min-height: 600px;">
+            <div class="card-header">
+                <i class="fa fa-book" aria-hidden="true"></i>
+                日记界面
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div style="padding-left: 50px;padding-right: 50px">
+                        <form method="post" style="margin-top: 30px;padding: 10px">
+                            {% csrf_token %}
+                            <div class="row mb-3">
+                                {% for foo in form %}
+                                    {% if foo.name == 'content' %}
+                                        <label for="inputEmail3" class="col-sm-1 col-form-label">{{ foo.label }}</label>
+                                        <div class="col-sm-11">
+                                            <div id="editor">
+                                                {{ foo }}
+                                            </div>
+                                            <span class="error-msg"></span><br>
+                                        </div>
+                                    {% else %}
+                                        <label for="inputEmail3" class="col-sm-1 col-form-label">{{ foo.label }}</label>
+                                        <div class="col-sm-11">
+                                            {{ foo }}
+                                            <span class="error-msg"></span><br>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <button type="submit" class="btn btn-primary">添加</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block JS %}
+    <script src="{% static 'plugins/editor.md-master/editormd.min.js' %}"></script>
+    <script>
+        $(function () {
+            initEditor()
+        })
+
+        function initEditor() {
+            editormd('editor', {
+                placeholder: "请输入内容",
+                height: 400,
+                path: "{% static 'plugins/editor.md-master/lib/' %}"
+            })
+        }
+    </script>
+{% endblock %}

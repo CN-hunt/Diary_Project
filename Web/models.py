@@ -31,7 +31,7 @@ class DiaryContents(models.Model):
     """内容表"""
     notebook = models.ForeignKey(NoteBook, on_delete=models.CASCADE)
     title = models.CharField(verbose_name='标题', max_length=50)
-    content = models.TextField(verbose_name='日记内容')
+    content = models.TextField(verbose_name='内容')
     weather_choice = (
         ('1', '☀️ 晴天'),
         ('2', '☁️ 多云'),
@@ -42,5 +42,7 @@ class DiaryContents(models.Model):
         ('7', '⛈️ 雷雨'),
         ('8', '🌤️ 一般'),
     )
-    weather = models.SmallIntegerField(verbose_name='天气', choices=weather_choice)
+    weather = models.CharField(verbose_name='天气', choices=weather_choice,max_length=50)
     created_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
+
+
