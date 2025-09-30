@@ -1,0 +1,121 @@
+
+.clickable-card {
+    border: 2px dashed #adb5bd;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.clickable-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s;
+}
+
+.clickable-card:hover {
+    border-color: #007bff;
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 123, 255, 0.15);
+}
+
+.clickable-card:hover::before {
+    left: 100%;
+}
+
+.clickable-card:active {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 123, 255, 0.2);
+}
+
+.add-icon-wrapper {
+    transition: transform 0.3s ease;
+}
+
+.clickable-card:hover .add-icon-wrapper {
+    transform: scale(1.1);
+}
+
+.add-icon {
+    color: #6c757d;
+    font-size: 48px;
+    transition: all 0.3s ease;
+}
+
+.clickable-card:hover .add-icon {
+    color: #007bff;
+    transform: rotate(90deg);
+}
+
+.add-text {
+    color: #6c757d;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    margin-bottom: 0;
+}
+
+.clickable-card:hover .add-text {
+    color: #007bff;
+}
+
+/* 确保整个卡片区域都可点击 */
+.clickable-card, .clickable-card * {
+    cursor: pointer;
+}
+
+
+
+/* 日记本卡片悬停效果 */
+.notebook-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.notebook-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    border-color: black;
+}
+
+.notebook-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.6s;
+}
+
+.notebook-card:hover::before {
+    left: 100%;
+}
+
+/* 卡片内部元素的悬停效果 */
+.notebook-card .card-header {
+    transition: all 0.3s ease;
+}
+
+.notebook-card:hover .card-header {
+    background-color: black;
+    color: white;
+}
+
+.notebook-card .btn {
+    transition: all 0.3s ease;
+}
+
+.notebook-card:hover .btn {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

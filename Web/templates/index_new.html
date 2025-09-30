@@ -1,0 +1,88 @@
+{% extends 'basic/layout.html' %}
+{% load static %}
+{% block CSS %}
+    <link rel="stylesheet" href="{%  static 'CSS/index_new.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div style="margin-top: 80px">
+
+        <div class="card container" style="min-height: 800px">
+            <div class="card-body">
+
+                <div class="row" style="margin-top: 10px">
+                    {% for notebook in notebooks %}
+                        <div class="col-sm-3 mb-3">
+                            <div class="card text-center notebook-card" style="min-height: 200px;min-width: 75px">
+                                <div class="card-header">
+                                    {{ notebook.Book_Name }}
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ notebook.created_at }}</h5>
+                                    <p class="card-text">
+                                        {{ notebook.description }}
+                                    </p>
+                                    <div class="row" style="margin-top: min(50px)">
+                                        <div class="col-sm-6 ">
+                                            <a href="/notebook/content/{{ notebook.id }}/show/"
+                                               class="btn btn-outline-dark btn-sm">查看日记本</a>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <a href="/notebook/{{ notebook.id }}/del/"
+                                               class="btn btn-outline-danger btn-sm">删除日记本</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <!-- 简化的添加日记本卡片 -->
+                    <div class="col-sm-3 mb-3">
+                        <div class="card text-center add-notebook-card clickable-card"
+                             style="min-height: 200px;min-width: 75px;"
+                             data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <div class="card-body d-flex flex-column justify-content-center">
+                                <div class="add-icon-wrapper">
+                                    <i class="fa fa-plus-circle add-icon" aria-hidden="true"></i>
+                                </div>
+                                <p class="add-text mt-2">添加新日记本</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            {#    弹出框#}
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color: #b6d4fe">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">新建日记本</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <form action="{% url 'notebook_add' %}" method="post">
+                            {% csrf_token %}
+                            <div class="modal-body">
+
+                                <input type="text" class="form-control" name="notebook" placeholder="请输入日记本名">
+                                <br>
+                                <textarea name="content" id="" cols="30" rows="10" class="form-control"
+                                          placeholder="请输入简介"></textarea>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">关 闭
+                                </button>
+                                <button type="submit" class="btn btn-outline-dark">保 存</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

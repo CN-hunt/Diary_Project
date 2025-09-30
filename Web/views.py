@@ -12,7 +12,7 @@ def index(request):
     user_id = request.session.get('user_id')
     notebook_obj = models.NoteBook.objects.filter(user_id=user_id)
     print(notebook_obj)
-    return render(request, 'index.html', {'notebooks': notebook_obj})
+    return render(request, 'index_new.html', {'notebooks': notebook_obj})
 
 
 @csrf_exempt
@@ -144,7 +144,7 @@ def notebook_content_catalog(request, nid):
 def notebook_content_del(request, nid, bid):
     print(nid)
     models.DiaryContents.objects.filter(id=nid, ).delete()
-    return redirect('notebook_content_add', nid=bid)
+    return redirect('notebook_content_show', nid=bid)
 
 
 def notebook_content_edit(request, nid, bid):

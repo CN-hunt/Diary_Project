@@ -6,6 +6,10 @@
         .card-body {
             padding: 0;
         }
+        .editormd-fullscreen{
+            z-index: 1001;
+            margin-top: 60px;
+        }
     </style>
 {% endblock %}
 
@@ -18,10 +22,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-sm-2" style="border-right:2px solid silver;min-height: 600px">
-                        列表
-                    </div>
-                    <div class="col-sm-10">
+                    <div class="col-sm-12">
                         <form method="post" style="margin-top: 30px;padding: 10px">
                             {% csrf_token %}
                             <div class="row mb-3">
@@ -63,7 +64,7 @@
 
         function initEditor() {
             editormd('editor', {
-                placeholder: "请输入内容",
+                placeholder: "采用markdown输入，我们推荐右上角全屏输入",
                 height: 500,
                 path: "{% static 'plugins/editor.md-master/lib/' %}"
             })
