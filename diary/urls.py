@@ -37,5 +37,11 @@ urlpatterns = [
     path('notebook/content/<int:nid>/catalog/', views.notebook_content_catalog, name='notebook_content_catalog'),
     path('notebook/<int:bid>/content/<int:nid>/del/', views.notebook_content_del, name='notebook_content_del'),
     path('notebook/<int:bid>/content/<int:nid>/edit/', views.notebook_content_edit, name='notebook_content_edit'),
+    path('click/', views.click, name='click'),
+
+    path('chart/', views.chart, name='chart'),
+    path('chart/data/', views.chart_data_bar, name='chart_data_bar'),
+    path('chart/data/line', views.chart_data_line, name='chart_data_line'),
+    path('chart/data/pie', views.chart_data_pie, name='chart_data_pie'),
 
 ]

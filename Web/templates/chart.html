@@ -1,0 +1,203 @@
+{% extends 'basic/layout.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container-fluid" style="margin-top: 80px">
+        <div class="row">
+
+            <div class="col-sm-4 mb-2">
+                <div class="card">
+                    <div class="card-body">
+{#                        内容#}
+                        <div id="chart1" style="width: 100%;height: 400px"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4 mb-2">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="chart2" style="width: 100%;height: 400px"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="chart2" style="width: 100%;height: 400px"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="chart3" style="width: 100%;height: 300px"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block JS %}
+    <script src={% static 'JS/jquery-3.7.1.min.js' %}></script>
+    <script src="{% static 'plugins/dist/echarts.js' %}"></script>
+    <script>
+        $(function () {
+            initBar()
+            initLine()
+            initPie()
+
+        })
+
+        function initBar() {
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('chart1'));
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: ''
+                },
+                tooltip: {},
+                legend: {
+                    data: []//后台获取
+                },
+                xAxis: {
+                    data: []//后台获取
+                },
+                yAxis: {},
+                series: [
+                    //后台获取
+                ]
+            };
+
+            $.ajax({
+                url: '{% url 'chart_data_bar' %}',
+                type: 'get',
+                dataType: 'JSON',
+                success: function (res) {
+                    //将后台返回的数据更新到option当中
+                    if (res.status) {
+                        option.legend.data = res.data.legend;
+                        option.xAxis.data = res.data.x_axis;
+                        option.series = res.data.series_list;
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(option);
+                    }
+
+                }
+            })
+
+
+        }
+
+        function initLine() {
+            var myChart = echarts.init(document.getElementById('chart3'));
+            var option = {
+                title: {
+                    text: 'Stacked Line'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: []
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: []
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    //后端获取
+                ]
+            };
+            $.ajax({
+                url: '{% url 'chart_data_line' %}',
+                type: "get",
+                dataType: "JSON",
+                success: function (res) {
+                    if (res.status) {
+                        option.legend.data = res.data.legend;
+                        option.series = res.data.series_list;
+                        option.xAxis.data = res.data.x_axis
+
+                        myChart.setOption(option);
+                    }
+                }
+            })
+
+
+        }
+
+        function initPie() {
+            var myChart = echarts.init(document.getElementById('chart2'));
+            var option = {
+                title: {
+                    text: '记录时天气',
+                    subtext: '',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    bottom: 0
+                },
+                series: [
+                    {
+                        name: '天气',
+                        type: 'pie',
+                        radius: '50%',
+                        data: [
+                            //后台获取，由于这个列表（series）里面存在两个元素，所以后面寻找的时候需要额外注意一下。
+                            /**
+                             * 原始数据长这样呢，也可以直接去echarts官网看
+                             { value: 1048, name: 'Search Engine' },
+                             { value: 735, name: 'Direct' },
+                             { value: 580, name: 'Email' },
+                             { value: 484, name: 'Union Ads' },
+                             { value: 300, name: 'Video Ads' }
+                             * **/
+                        ],
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+
+            $.ajax({
+                url: '{% url 'chart_data_pie' %}',
+                type: 'get',
+                dataType: 'JSON',
+                success: function (res) {
+                    if (res.status) {
+                        //由于这个series里面包含多个元素所以需要用[0]这种索引的形式找到第一个。再赋值
+                        option.series[0].data = res.data;
+                        myChart.setOption(option);
+                    }
+                }
+            })
+
+
+        }
+
+
+    </script>
+{% endblock %}

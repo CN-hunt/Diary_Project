@@ -7,12 +7,32 @@
     <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'plugins/font-awesome-4.7.0/css/font-awesome.css' %}">
     {% block CSS %}{% endblock %}
+    <style>
+        body {
+            background: linear-gradient(-45deg, #FDF5E6, #FFFFE0, #E0FFFF, #FAF0E6);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            height: 100vh; /* 确保铺满全屏 */
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+    </style>
 </head>
 <body>
 
 
-<nav class="navbar navbar-dark bg-dark fixed-top">
-    <div class="container-fluid">
+<nav class="navbar navbar-light bg-light fixed-top">
+    <div class="container">
         <a class="navbar-brand" href="{% url 'index' %}"><i class="fa fa-subscript" aria-hidden="true"></i> 日记 </a>
 
         {% if request.session.user_id %}
@@ -23,7 +43,7 @@
             </button>
         {% else %}
             <div class="dropdown">
-                <a class="btn btn-outline-light dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                    aria-expanded="false">
                     <i class="fa fa-bars" aria-hidden="true"></i>
                 </a>
@@ -33,7 +53,7 @@
                 </ul>
             </div>
         {% endif %}
-        <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar"
+        <div class="offcanvas offcanvas-end text-bg-light" tabindex="-1" id="offcanvasDarkNavbar"
              aria-labelledby="offcanvasDarkNavbarLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">欢迎你: {{ request.session.username }}</h5>
@@ -46,15 +66,15 @@
                         <a class="nav-link active" aria-current="page" href="{% url 'index' %}">主页</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="#">数据统计</a>
+                        <a class="nav-link " href="{% url 'chart' %}">数据统计</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
                             Dropdown
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
+                        <ul class="dropdown-menu dropdown-menu-light">
+                            <li><a class="dropdown-item" href="{% url 'click' %}">日 历</a></li>
                             <li><a class="dropdown-item" href="#">Another action</a></li>
                             <li>
                                 <hr class="dropdown-divider">

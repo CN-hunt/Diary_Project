@@ -83,7 +83,7 @@
 .notebook-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    border-color: black;
+    border-color: cornflowerblue;
 }
 
 .notebook-card::before {
@@ -107,7 +107,7 @@
 }
 
 .notebook-card:hover .card-header {
-    background-color: black;
+    background-color: cornflowerblue;
     color: white;
 }
 

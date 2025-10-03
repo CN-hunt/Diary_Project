@@ -6,6 +6,9 @@ from django.views.decorators.csrf import csrf_exempt  # 免除认证
 from Web import models
 from django.db.models import Q  # 构造复杂查询
 
+from django.db.models import Count
+from collections import Counter
+
 
 # Create your views here.
 def index(request):
@@ -159,3 +162,124 @@ def notebook_content_edit(request, nid, bid):
         models.DiaryContents.objects.filter(id=nid, ).update(title=form.cleaned_data['title'],
                                                              content=form.cleaned_data['content'])
         return redirect('notebook_content_show', nid=bid)
+
+
+def click(request):
+    return render(request, 'click.html')
+
+
+def chart(request):
+    return render(request, 'chart.html')
+
+
+def chart_data_bar(request):
+    diaries = models.DiaryContents.objects.all().values('created_time')
+
+    # 简单的月份统计
+    month_count = {}
+    for diary in diaries:
+        # 提取年月，格式：2024-01
+        month_key = diary['created_time'].strftime('%Y-%m')
+
+        if month_key in month_count:
+            month_count[month_key] += 1
+        else:
+            month_count[month_key] = 1
+
+    # 按月份排序
+    sorted_months = sorted(month_count.keys())
+
+    # 准备数据
+    months_display = []
+    counts = []
+
+    for month in sorted_months:
+        # 转换成中文显示：2024-01 → 1月
+        month_num = int(month.split('-')[1])  # 提取月份数字
+        months_display.append(f"{month_num}月")
+        counts.append(month_count[month])
+
+    # 返回前端需要的数据格式
+    result = {
+        'status': True,
+        'data': {
+            'legend': ["日记数量"],
+            'series_list': [
+                {
+                    "name": '日记数量',
+                    "type": 'bar',
+                    "data": counts
+                }
+            ],
+            'x_axis': months_display
+        }
+    }
+
+    return JsonResponse(result)
+
+
+def chart_data_line(request):
+    legend = ['皮诺', '金彪']
+    x_axis = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    series_list = [
+        {
+            "name": '皮诺',
+            "type": 'line',
+            "stack": 'Total',
+            "data": [120, 132, 150, 134, 90, 230, 210]
+        },
+        {
+            "name": '金彪',
+            "type": 'line',
+            "stack": 'Total',
+            "data": [220, 182, 191, 234, 290, 330, 310]
+        },
+    ]
+    result = {
+        'status': True,
+        'data': {
+            'legend': legend,
+            'series_list': series_list,
+            'x_axis': x_axis
+        }
+    }
+
+    return JsonResponse(result)
+
+
+def chart_data_pie(request):
+    # 获取所有天气数据
+    weather_queryset = models.DiaryContents.objects.all().values('weather')
+
+    # 使用Counter统计每种天气的出现次数
+    weather_counter = Counter()
+    for item in weather_queryset:
+        weather_code = item['weather']
+        weather_counter[weather_code] += 1
+
+    # 天气代码到名称的映射
+    weather_mapping = {
+        '1': '晴天',
+        '2': '多云',
+        '3': '雨天',
+        '4': '雪天',
+        '5': '大风',
+        '6': '雾天',
+        '7': '雷雨',
+        '8': '一般'
+    }
+
+    # 构建ECharts需要的数据格式
+    db_data_list = []
+    for weather_code, count in weather_counter.items():
+        weather_name = weather_mapping.get(weather_code, f'未知({weather_code})')
+        db_data_list.append({
+            "value": count,
+            "name": weather_name
+        })
+
+    result = {
+        'status': True,
+        'data': db_data_list
+    }
+    return JsonResponse(result)
