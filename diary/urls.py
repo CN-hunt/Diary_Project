@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+import utils.wordcloud
 from Web import views
 
 urlpatterns = [
@@ -43,5 +44,7 @@ urlpatterns = [
     path('chart/data/', views.chart_data_bar, name='chart_data_bar'),
     path('chart/data/line', views.chart_data_line, name='chart_data_line'),
     path('chart/data/pie', views.chart_data_pie, name='chart_data_pie'),
+
+    path('wordcloud/', utils.wordcloud.generate_wordcloud_image, name='wordcloud_image')
 
 ]
