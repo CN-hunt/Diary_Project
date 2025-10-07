@@ -28,20 +28,25 @@ def get_font_properties():
 
 def generate_wordcloud_image(request):
     """
-    生成词云图片视图
+    生成词云图片视图 - 修复数据隔离问题
     """
     try:
         # 获取字体属性
         font_prop = get_font_properties()
 
-        # 1. 获取所有日记内容
+        # 1. 从session获取当前用户ID
+        user_id = request.session.get('user_id')
+        if not user_id:
+            return generate_default_wordcloud(font_prop)
+
+        # 2. 获取当前用户的日记内容
         from Web.models import DiaryContents
-        diaries = DiaryContents.objects.all()
+        diaries = DiaryContents.objects.filter(notebook__user_id=user_id)  # 使用session中的user_id过滤
 
         if not diaries.exists():
             return generate_default_wordcloud(font_prop)
 
-        # 2. 合并所有内容并简单清理
+        # 其余代码保持不变...
         all_content = ""
         for diary in diaries:
             content = diary.content
@@ -59,12 +64,12 @@ def generate_wordcloud_image(request):
         # 统计词频，只取前10个词
         if word_list:
             word_counter = Counter(word_list)
-            top_words = word_counter.most_common(10)  # 只取前10个词
+            top_words = word_counter.most_common(10)
             word_freq = dict(top_words)
         else:
             word_freq = {}
 
-        # 4. 生成词云图片
+        # 4. 生成词云图片到内存
         img_buffer = BytesIO()
         plt.figure(figsize=(10, 8))
 
@@ -82,6 +87,7 @@ def generate_wordcloud_image(request):
         return HttpResponse(img_buffer.getvalue(), content_type='image/png')
 
     except Exception as e:
+        print(f"生成词云出错: {e}")
         return generate_error_wordcloud(str(e), font_prop)
 
 

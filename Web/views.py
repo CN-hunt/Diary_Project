@@ -173,13 +173,16 @@ def chart(request):
 
 
 def chart_data_bar(request):
-    diaries = models.DiaryContents.objects.all().values('created_time')
+    user_id = request.session.get('user_id')
+
+    # 获取当前用户的日记
+    diaries = models.DiaryContents.objects.filter(notebook__user_id=user_id)
 
     # 简单的月份统计
     month_count = {}
     for diary in diaries:
         # 提取年月，格式：2024-01
-        month_key = diary['created_time'].strftime('%Y-%m')
+        month_key = diary.created_time.strftime('%Y-%m')
 
         if month_key in month_count:
             month_count[month_key] += 1
@@ -195,7 +198,7 @@ def chart_data_bar(request):
 
     for month in sorted_months:
         # 转换成中文显示：2024-01 → 1月
-        month_num = int(month.split('-')[1])  # 提取月份数字
+        month_num = int(month.split('-')[1])
         months_display.append(f"{month_num}月")
         counts.append(month_count[month])
 
@@ -219,22 +222,44 @@ def chart_data_bar(request):
 
 
 def chart_data_line(request):
-    legend = ['皮诺', '金彪']
-    x_axis = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    """极简版 - 月度写作趋势"""
+    user_id = request.session.get('user_id')
+
+    # 简单统计最近6个月的写作数量
+    from datetime import datetime
+    from django.db.models import Count
+
+    # 使用Django的日期截断功能按月分组
+    from django.db.models.functions import TruncMonth
+
+    monthly_stats = models.DiaryContents.objects.filter(
+        notebook__user_id=user_id
+    ).annotate(
+        month=TruncMonth('created_time')
+    ).values('month').annotate(
+        count=Count('id')
+    ).order_by('month')[:6]  # 最近6个月
+
+    # 准备数据
+    if monthly_stats:
+        months = [stat['month'].strftime('%Y-%m') for stat in monthly_stats]
+        counts = [stat['count'] for stat in monthly_stats]
+    else:
+        # 示例数据
+        months = ['2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06']
+        counts = [8, 12, 6, 15, 10, 7]
+
+    legend = ['月度写作']
+    x_axis = months
     series_list = [
         {
-            "name": '皮诺',
+            "name": '月度写作',
             "type": 'line',
-            "stack": 'Total',
-            "data": [120, 132, 150, 134, 90, 230, 210]
-        },
-        {
-            "name": '金彪',
-            "type": 'line',
-            "stack": 'Total',
-            "data": [220, 182, 191, 234, 290, 330, 310]
-        },
+            "data": counts,
+            "itemStyle": {"color": '#1890ff'}
+        }
     ]
+
     result = {
         'status': True,
         'data': {
@@ -248,30 +273,36 @@ def chart_data_line(request):
 
 
 def chart_data_pie(request):
-    # 获取所有天气数据
-    weather_queryset = models.DiaryContents.objects.all().values('weather')
+    """修复天气统计的数据隔离问题"""
+    # 从session获取当前用户ID
+    user_id = request.session.get('user_id')
 
-    # 使用Counter统计每种天气的出现次数
-    weather_counter = Counter()
-    for item in weather_queryset:
-        weather_code = item['weather']
-        weather_counter[weather_code] += 1
+    # 使用Django ORM直接统计，只统计当前用户的数据
+    from django.db.models import Count
+
+    weather_stats = models.DiaryContents.objects.filter(
+        notebook__user_id=user_id  # 使用session中的user_id过滤
+    ).values('weather').annotate(
+        count=Count('weather')
+    )
 
     # 天气代码到名称的映射
     weather_mapping = {
-        '1': '晴天',
-        '2': '多云',
-        '3': '雨天',
-        '4': '雪天',
-        '5': '大风',
-        '6': '雾天',
-        '7': '雷雨',
-        '8': '一般'
+        '1': '☀️ 晴天',
+        '2': '☁️ 多云',
+        '3': '🌧️ 雨天',
+        '4': '❄️ 雪天',
+        '5': '💨 大风',
+        '6': '🌫️ 雾天',
+        '7': '⛈️ 雷雨',
+        '8': '🌤️ 一般'
     }
 
     # 构建ECharts需要的数据格式
     db_data_list = []
-    for weather_code, count in weather_counter.items():
+    for stat in weather_stats:
+        weather_code = stat['weather']
+        count = stat['count']
         weather_name = weather_mapping.get(weather_code, f'未知({weather_code})')
         db_data_list.append({
             "value": count,
