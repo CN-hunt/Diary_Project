@@ -1,5 +1,6 @@
 {% extends 'basic/layout.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block CSS %}
     <style>
@@ -120,7 +121,7 @@
     <div class="center" style="margin-top: 100px;width: 50%;">
         <div class="card">
             <div class="card-body">
-                <h3 style="text-align: center">登录</h3>
+                <h3 style="text-align: center">{% translate '登录' %}</h3>
                 <form action="" novalidate method="post">
                     {% csrf_token %}
                     {% for foo in form %}
@@ -132,7 +133,7 @@
                                 </div>
                                 <div class="col-4" style="margin-top: 20px">
                                     <a href=""><img src="{% url 'image_code' %}" alt="error" id="imageCode"
-                                                    title="点击更换图片"></a>
+                                                    title={% translate '点击更换图片' %}></a>
                                 </div>
                             </div>
                         {% else %}

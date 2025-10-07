@@ -1,5 +1,6 @@
 {% extends 'basic/layout.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block CSS %}
     <link rel="stylesheet" href="{% static 'plugins/editor.md-master/css/editormd.min.css' %}">
@@ -46,7 +47,7 @@
                                     {% endif %}
                                 {% endfor %}
                             </div>
-                            <button type="submit" class="btn btn-primary">添加</button>
+                            <button type="submit" class="btn btn-primary">{% translate '添 加' %}</button>
                         </form>
                     </div>
                 </div>

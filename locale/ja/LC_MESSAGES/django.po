@@ -1,0 +1,307 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-07 22:51+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: .\Web\forms\account.py:28
+msgid "密码长度不能少于8个字符"
+msgstr "パスワードは8文字以上で入力してください"
+
+#: .\Web\forms\account.py:29
+msgid "密码长度不能超过20个字符"
+msgstr "パスワードは20文字以内で入力してください"
+
+#: .\Web\forms\account.py:33
+msgid "确认密码"
+msgstr "パスワード確認"
+
+#: .\Web\forms\account.py:35 .\Web\templates\register.html:36
+msgid "验证码"
+msgstr "確認コード"
+
+#: .\Web\forms\account.py:37
+msgid "请输入验证码"
+msgstr "確認コードを入力してください"
+
+#: .\Web\forms\account.py:44 .\Web\models.py:10
+msgid "用户名"
+msgstr "ユーザー名"
+
+#: .\Web\forms\account.py:45 .\Web\forms\account.py:100 .\Web\models.py:11
+msgid "邮箱"
+msgstr "メールアドレス"
+
+#: .\Web\forms\account.py:54
+msgid "用户名已经存在"
+msgstr "このユーザー名は既に使用されています"
+
+#: .\Web\forms\account.py:63
+msgid "邮箱已经存在"
+msgstr "このメールアドレスは既に登録されています"
+
+#: .\Web\forms\account.py:79
+msgid "两次密码不一致"
+msgstr "パスワードが一致しません"
+
+#: .\Web\forms\account.py:92
+msgid "验证码失效或未发送"
+msgstr "確認コードが無効か、送信されていません"
+
+#: .\Web\forms\account.py:95
+msgid "验证码错误请重新输入"
+msgstr "確認コードが間違っています。再入力してください"
+
+#: .\Web\forms\account.py:111
+msgid "邮箱已存在"
+msgstr "メールアドレスは既に登録されています"
+
+#: .\Web\forms\account.py:117
+msgid "邮箱验证码"
+msgstr "メール確認コード"
+
+#: .\Web\forms\account.py:120
+msgid "您好这是您的邮箱验证码:"
+msgstr "こちらが您的な確認コードです:"
+
+#: .\Web\forms\account.py:125
+msgid "发送失败，请检查"
+msgstr "送信に失敗しました。確認してください"
+
+#: .\Web\forms\account.py:134
+msgid "用户名或邮箱"
+msgstr "ユーザー名またはメールアドレス"
+
+#: .\Web\forms\account.py:135 .\Web\models.py:12
+msgid "密码"
+msgstr "パスワード"
+
+#: .\Web\forms\account.py:137
+msgid "图片验证码"
+msgstr "画像認証コード"
+
+#: .\Web\forms\account.py:155
+msgid "验证码已过期，请再次获取"
+msgstr "確認コードの有効期限が切れました。再取得してください"
+
+#: .\Web\forms\account.py:158
+msgid "验证码输入错误"
+msgstr "確認コードの入力が間違っています"
+
+#: .\Web\models.py:17
+msgid "日记本名称"
+msgstr "日記帳名"
+
+#: .\Web\models.py:18
+msgid "描述"
+msgstr "説明"
+
+#: .\Web\models.py:29 .\Web\models.py:48
+msgid "创建时间"
+msgstr "作成日時"
+
+#: .\Web\models.py:35
+msgid "标题"
+msgstr "タイトル"
+
+#: .\Web\models.py:36
+msgid "内容"
+msgstr "内容"
+
+#: .\Web\models.py:38 .\Web\views.py:294
+msgid "☀️ 晴天"
+msgstr "☀️ 晴れ"
+
+#: .\Web\models.py:39 .\Web\views.py:295
+msgid "☁️ 多云"
+msgstr "☁️ 曇り"
+
+#: .\Web\models.py:40 .\Web\views.py:296
+msgid "🌧️ 雨天"
+msgstr "🌧️ 雨"
+
+#: .\Web\models.py:41 .\Web\views.py:297
+msgid "❄️ 雪天"
+msgstr "❄️ 雪"
+
+#: .\Web\models.py:42 .\Web\views.py:298
+msgid "💨 大风"
+msgstr "💨 強風"
+
+#: .\Web\models.py:43 .\Web\views.py:299
+msgid "🌫️ 雾天"
+msgstr "🌫️ 霧"
+
+#: .\Web\models.py:44 .\Web\views.py:300
+msgid "⛈️ 雷雨"
+msgstr "⛈️ 雷雨"
+
+#: .\Web\models.py:45 .\Web\views.py:301
+msgid "🌤️ 一般"
+msgstr "🌤️ 普通"
+
+#: .\Web\models.py:47 .\Web\templates\content_show.html:44
+msgid "天气"
+msgstr "天気"
+
+#: .\Web\templates\basic\layout.html:38
+msgid "日记"
+msgstr "日記"
+
+#: .\Web\templates\basic\layout.html:53 .\Web\templates\login.html:124
+msgid "登录"
+msgstr "ログイン"
+
+#: .\Web\templates\basic\layout.html:54 .\Web\templates\register.html:23
+#: .\Web\templates\register.html:48
+msgid "注册"
+msgstr "新規登録"
+
+#: .\Web\templates\basic\layout.html:62
+msgid "欢迎你"
+msgstr "ようこそ"
+
+#: .\Web\templates\basic\layout.html:70
+msgid "主页"
+msgstr "ホーム"
+
+#: .\Web\templates\basic\layout.html:73
+msgid "数据统计"
+msgstr "データ統計"
+
+#: .\Web\templates\basic\layout.html:80
+msgid "更多"
+msgstr "もっと"
+
+#: .\Web\templates\basic\layout.html:83
+msgid "日 历"
+msgstr "カ レ ン ダ ー"
+
+#: .\Web\templates\basic\layout.html:84
+msgid "天 气"
+msgstr "天 気"
+
+#: .\Web\templates\basic\layout.html:87
+msgid "来句诗"
+msgstr "詩 を 一 句"
+
+#: .\Web\templates\basic\layout.html:90
+msgid "反馈"
+msgstr "フィードバック"
+
+#: .\Web\templates\basic\layout.html:99
+msgid "注 销"
+msgstr "ロ グ ア ウ ト"
+
+#: .\Web\templates\basic\layout.html:121
+msgid "Switch"
+msgstr ""
+
+#: .\Web\templates\content_add.html:50 .\Web\templates\content_edit.html:50
+msgid "添 加"
+msgstr "追 加"
+
+#: .\Web\templates\content_show.html:19
+#, fuzzy
+#| msgid "日记"
+msgid "日记界面"
+msgstr "日記"
+
+#: .\Web\templates\content_show.html:22
+msgid "删除"
+msgstr "削除"
+
+#: .\Web\templates\content_show.html:24
+#, fuzzy
+#| msgid "添 加"
+msgid "添加"
+msgstr "追 加"
+
+#: .\Web\templates\content_show.html:26
+msgid "编辑"
+msgstr "編集"
+
+#: .\Web\templates\content_show.html:45
+msgid "时间"
+msgstr "時間"
+
+#: .\Web\templates\content_show.html:52
+msgid "添加日记"
+msgstr "日記を追加"
+
+#: .\Web\templates\index_new.html:29
+msgid "查看日记本"
+msgstr "日記帳を表示"
+
+#: .\Web\templates\index_new.html:33
+msgid "删除日记本"
+msgstr "日記帳を削除"
+
+#: .\Web\templates\index_new.html:49
+msgid "添加日记本"
+msgstr "日記帳を追加"
+
+#: .\Web\templates\index_new.html:67
+msgid "新建日记本"
+msgstr "新規日記帳作成"
+
+#: .\Web\templates\index_new.html:82
+msgid "关 闭"
+msgstr "閉 じ る"
+
+#: .\Web\templates\index_new.html:84
+msgid "保 存"
+msgstr "保 存"
+
+#: .\Web\templates\index_new.html:97
+msgid "今日诗句"
+msgstr "今日の詩句"
+
+#: .\Web\templates\index_new.html:102
+msgid "加载中…"
+msgstr "読み込み中…"
+
+#: .\Web\templates\index_new.html:105
+msgid "换一个"
+msgstr "別のを表示"
+
+#: .\Web\templates\login.html:136
+msgid "点击更换图片"
+msgstr "クリックで画像変更"
+
+#: .\Web\views.py:35
+msgid "开始你的第一本笔记吧"
+msgstr "最初の日記を始めましょう"
+
+#: .\Web\views.py:72
+msgid "用户名或密码错误"
+msgstr "ユーザー名またはパスワードが間違っています"
+
+#: .\Web\views.py:212 .\Web\views.py:215
+msgid "日记数量"
+msgstr "日記数"
+
+#: .\Web\views.py:255 .\Web\views.py:259
+msgid "月度写作"
+msgstr "月間投稿数"
+
+#: .\diary\settings.py:140
+msgid "简体中文"
+msgstr "簡体字中国語"
+
+#: .\diary\settings.py:141
+msgid "日本語"
+msgstr "日本語"

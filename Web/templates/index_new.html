@@ -1,5 +1,6 @@
 {% extends 'basic/layout.html' %}
 {% load static %}
+{% load i18n %}
 {% block CSS %}
     <link rel="stylesheet" href="{% static 'CSS/index_new.css' %}">
 {% endblock %}
@@ -25,11 +26,11 @@
                                     <div class="row" style="margin-top: min(50px)">
                                         <div class="col-sm-6 ">
                                             <a href="/notebook/content/{{ notebook.id }}/show/"
-                                               class="btn btn-outline-primary btn-sm">查看日记本</a>
+                                               class="btn btn-outline-primary btn-sm">{% translate '查看日记本' %}</a>
                                         </div>
                                         <div class="col-sm-6">
                                             <a href="/notebook/{{ notebook.id }}/del/"
-                                               class="btn btn-outline-danger btn-sm">删除日记本</a>
+                                               class="btn btn-outline-danger btn-sm">{% translate '删除日记本' %}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -45,13 +46,16 @@
                                 <div class="add-icon-wrapper">
                                     <i class="fa fa-plus-circle add-icon" aria-hidden="true"></i>
                                 </div>
-                                <p class="add-text mt-2">添加新日记本</p>
+                                <p class="add-text mt-2">{% translate '添加日记本' %}</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
             </div>
+
+
+
 
             {#    弹出框#}
             <!-- Modal -->
@@ -60,7 +64,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header" style="background-color: #b6d4fe">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">新建日记本</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">{% translate '新建日记本' %}</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
 
@@ -75,9 +79,9 @@
 
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">关 闭
+                                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">{% translate '关 闭' %}
                                 </button>
-                                <button type="submit" class="btn btn-outline-dark">保 存</button>
+                                <button type="submit" class="btn btn-outline-dark">{% translate '保 存' %}</button>
                             </div>
                         </form>
 
@@ -85,63 +89,7 @@
                 </div>
             </div>
 
-            <!--古诗文弹窗-->
-            <div class="modal fade" id="poetryModal" tabindex="-1">
-                <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">📜 今日诗词</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body text-center">
-                            <div id="poetryContent" class="mb-3">
-                                <p>加载中...</p>
-                            </div>
-                            <button class="btn btn-outline-primary btn-sm" onclick="loadRandomPoetry()">
-                                换一首
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
         </div>
     </div>
-{% endblock %}
-
-{% block JS %}
-    <script>
-        function loadRandomPoetry() {
-            $('#poetryContent').html('<p><i class="fas fa-spinner fa-spin"></i> 加载中...</p>');
-
-            // 使用免费的诗词API
-            $.ajax({
-                url: 'https://api.apiopen.top/api/sentences',
-                type: 'GET',
-                dataType: 'json',
-                success: function (response) {
-                    if (response && response.result) {
-                        const poetry = response.result;
-                        $('#poetryContent').html(`
-                    <p class="fs-5 fst-italic">"${poetry.name}"</p>
-                    <p class="text-muted">—— ${poetry.from || '未知'}</p>
-                `);
-                    } else {
-                        $('#poetryContent').html('<p>获取诗词失败</p>');
-                    }
-                },
-                error: function () {
-                    $('#poetryContent').html(`
-                <p class="text-muted">诗词加载失败</p>
-                <small>山重水复疑无路，柳暗花明又一村。</small>
-            `);
-                }
-            });
-        }
-
-        // 模态框显示时自动加载
-        $('#poetryModal').on('show.bs.modal', function () {
-            loadRandomPoetry();
-        });
-    </script>
 {% endblock %}

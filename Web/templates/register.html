@@ -1,5 +1,6 @@
 {% extends 'basic/layout.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block CSS %}
     <style>
@@ -19,7 +20,7 @@
     <div class="" style="margin-top: 100px;width:500px;margin-left: 35%">
         <div class="card" style="padding: 10px;text-align: center;box-shadow: 4px 4px 10px #DCDCDC">
             <div class="card-body">
-                <h2><b>注册</b></h2><br>
+                <h2><b>{% translate '注册' %}</b></h2><br>
                 <form id="regForm" class="form" action="#" method="post">
                     {% csrf_token %}
                     {% for foo in form %}
@@ -32,7 +33,7 @@
                                 <div class="col-4">
                                     <input style="width: 130px" class="btn btn-outline-dark"
                                            type="button"
-                                           value="验证码" id="confirm_bottom">
+                                           value={% translate '验证码' %} id="confirm_bottom">
                                 </div>
                             </div>
                         {% else %}
@@ -44,7 +45,7 @@
                     {% endfor %}
 
                     <br>
-                    <input id="btnSubmit" class="btn btn-outline-primary" type="button" value="注 册">
+                    <input id="btnSubmit" class="btn btn-outline-primary" type="button" value={% translate '注册' %}>
                 </form>
             </div>
         </div>

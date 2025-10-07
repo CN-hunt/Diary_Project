@@ -9,6 +9,9 @@ from django.db.models import Q  # 构造复杂查询
 from django.db.models import Count
 from collections import Counter
 
+from django.utils.translation import gettext_lazy as _
+import os
+
 
 # Create your views here.
 def index(request):
@@ -29,7 +32,7 @@ def register(request):
         models.NoteBook.objects.create(  # 用户注册时会初始化的偶默认笔记本
             user=instance,
             Book_Name=instance.username,
-            description="开始你的第一本笔记吧"
+            description=_("开始你的第一本笔记吧")
 
         )
 
@@ -66,7 +69,7 @@ def login(request):
             request.session['username'] = user_object.username
             request.session.set_expiry(60 * 60 * 24 * 7)  # 用户登录成功后重写session数据为两周
             return redirect('/index/')
-        form.add_error('username', '用户名或密码错误')
+        form.add_error('username', _('用户名或密码错误'))
     return render(request, 'login.html', {'form': form})
 
 
@@ -206,10 +209,10 @@ def chart_data_bar(request):
     result = {
         'status': True,
         'data': {
-            'legend': ["日记数量"],
+            'legend': [_("日记数量")],
             'series_list': [
                 {
-                    "name": '日记数量',
+                    "name": _('日记数量'),
                     "type": 'bar',
                     "data": counts
                 }
@@ -249,11 +252,11 @@ def chart_data_line(request):
         months = ['2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06']
         counts = [8, 12, 6, 15, 10, 7]
 
-    legend = ['月度写作']
+    legend = [_('月度写作')]
     x_axis = months
     series_list = [
         {
-            "name": '月度写作',
+            "name": _('月度写作'),
             "type": 'line',
             "data": counts,
             "itemStyle": {"color": '#1890ff'}
@@ -288,14 +291,14 @@ def chart_data_pie(request):
 
     # 天气代码到名称的映射
     weather_mapping = {
-        '1': '☀️ 晴天',
-        '2': '☁️ 多云',
-        '3': '🌧️ 雨天',
-        '4': '❄️ 雪天',
-        '5': '💨 大风',
-        '6': '🌫️ 雾天',
-        '7': '⛈️ 雷雨',
-        '8': '🌤️ 一般'
+        '1': _('☀️ 晴天'),
+        '2': _('☁️ 多云'),
+        '3': _('🌧️ 雨天'),
+        '4': _('❄️ 雪天'),
+        '5': _('💨 大风'),
+        '6': _('🌫️ 雾天'),
+        '7': _('⛈️ 雷雨'),
+        '8': _('🌤️ 一般')
     }
 
     # 构建ECharts需要的数据格式

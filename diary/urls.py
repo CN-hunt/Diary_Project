@@ -20,6 +20,9 @@ from django.urls import path
 import utils.wordcloud
 from Web import views
 
+from django.urls import path,include
+from django.views.i18n import set_language
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', views.index, name='index'),
@@ -45,6 +48,8 @@ urlpatterns = [
     path('chart/data/line', views.chart_data_line, name='chart_data_line'),
     path('chart/data/pie', views.chart_data_pie, name='chart_data_pie'),
 
-    path('wordcloud/', utils.wordcloud.generate_wordcloud_image, name='wordcloud_image')
+    path('wordcloud/', utils.wordcloud.generate_wordcloud_image, name='wordcloud_image'),
+
+    path('i18n/', include('django.conf.urls.i18n')), # 提供 /i18n/setlang/ 端点
 
 ]

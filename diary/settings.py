@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from django.utils.translation import gettext_lazy as _
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,6 +43,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -63,6 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.i18n',
             ],
         },
     },
@@ -131,6 +135,16 @@ WHITE_REGEX_URL_LIST = [
     # 主页
 ]
 
+# 支持的语言列表（语言代码，显示名称）
+LANGUAGES = [
+    ('zh-hans', _('简体中文')),
+    ('ja', _('日本語')),
+]
+# 翻译文件所在目录（通常设在项目根目录，即 manage.py 同级目录）
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'),
+]
+USE_L10N = True
 
 try:
     from .local_settings import *
