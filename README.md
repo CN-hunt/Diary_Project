@@ -72,7 +72,7 @@ text
   EMAIL_HOST_USER = '你的邮箱'  
   EMAIL_HOST_PASSWORD = '你的SMTP授权码'  
   DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  
-
+- 下载并启动Redis服务
   > CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
